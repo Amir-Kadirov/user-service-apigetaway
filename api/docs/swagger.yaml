@@ -1,0 +1,1097 @@
+definitions:
+  models.ResponseError:
+    properties:
+      error: {}
+    type: object
+  models.ResponseSuccess:
+    properties:
+      data: {}
+      metadata: {}
+    type: object
+  user_service.BranchPrimaryKey:
+    properties:
+      id:
+        type: string
+    type: object
+  user_service.CreateBranch:
+    properties:
+      active:
+        type: boolean
+      address:
+        description: 'Note: Corrected spelling to "address"'
+        type: string
+      close_time:
+        type: string
+      location:
+        allOf:
+        - $ref: '#/definitions/user_service.Location'
+        description: 'Note: Changed to lowercase "location"'
+      name:
+        type: string
+      open_time:
+        type: string
+      phone:
+        type: string
+    type: object
+  user_service.CreateCustomer:
+    properties:
+      date_of_birth:
+        type: string
+      gender:
+        type: string
+      gmail:
+        type: string
+      language:
+        type: string
+      phone:
+        type: string
+    type: object
+  user_service.CreateSeller:
+    properties:
+      date_of_birth:
+        type: string
+      gmail:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      shop_id:
+        type: string
+    type: object
+  user_service.CreateShop:
+    properties:
+      currency:
+        type: string
+      description_en:
+        type: string
+      description_ru:
+        type: string
+      description_uz:
+        type: string
+      location:
+        $ref: '#/definitions/user_service.LocationShop'
+      name_en:
+        type: string
+      name_ru:
+        type: string
+      name_uz:
+        type: string
+      payment_types:
+        items:
+          type: string
+        type: array
+      phone:
+        type: string
+    type: object
+  user_service.CreateSystemUser:
+    properties:
+      gmail:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+  user_service.CustomerPrimaryKey:
+    properties:
+      id:
+        type: string
+    type: object
+  user_service.GetListBranchRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+    type: object
+  user_service.GetListCustomerRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+    type: object
+  user_service.GetListSellerRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+    type: object
+  user_service.GetListShopRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+    type: object
+  user_service.GetListSystemUserRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+    type: object
+  user_service.Location:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  user_service.LocationShop:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  user_service.SellerPrimaryKey:
+    properties:
+      id:
+        type: string
+    type: object
+  user_service.ShopPrimaryKey:
+    properties:
+      id:
+        type: string
+    type: object
+  user_service.SystemUserPrimaryKey:
+    properties:
+      id:
+        type: string
+    type: object
+  user_service.UpdateBranchRequest:
+    properties:
+      active:
+        type: boolean
+      address:
+        description: 'Note: Corrected spelling to "address"'
+        type: string
+      close_time:
+        type: string
+      id:
+        type: string
+      location:
+        allOf:
+        - $ref: '#/definitions/user_service.Location'
+        description: 'Note: Changed to lowercase "location"'
+      name:
+        type: string
+      open_time:
+        type: string
+      phone:
+        type: string
+    type: object
+  user_service.UpdateCustomerRequest:
+    properties:
+      date_of_birth:
+        type: string
+      gender:
+        type: string
+      gmail:
+        type: string
+      id:
+        type: string
+      language:
+        type: string
+      phone:
+        type: string
+    type: object
+  user_service.UpdateSellerRequest:
+    properties:
+      date_of_birth:
+        type: string
+      gmail:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      shop_id:
+        type: string
+    type: object
+  user_service.UpdateShopRequest:
+    properties:
+      currency:
+        type: string
+      description_en:
+        type: string
+      description_ru:
+        type: string
+      description_uz:
+        type: string
+      id:
+        type: string
+      location:
+        $ref: '#/definitions/user_service.LocationShop'
+      name_en:
+        type: string
+      name_ru:
+        type: string
+      name_uz:
+        type: string
+      payment_types:
+        items:
+          type: string
+        type: array
+      phone:
+        type: string
+    type: object
+  user_service.UpdateSystemUserRequest:
+    properties:
+      gmail:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/branch/create:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a Branch and returns its id
+      parameters:
+      - description: Branch
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CreateBranch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Creates a Branch
+      tags:
+      - Branch
+  /v1/branch/delete:
+    delete:
+      description: This api delete a Branch
+      parameters:
+      - description: Branch
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.BranchPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: delete a Branch
+      tags:
+      - Branch
+  /v1/branch/getbyid:
+    post:
+      description: This api get by id a Branch
+      parameters:
+      - description: Branch
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.BranchPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get by id a Branch
+      tags:
+      - Branch
+  /v1/branch/getlist:
+    post:
+      description: This api get list a Branch
+      parameters:
+      - description: Branch
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.GetListBranchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get list a Branch
+      tags:
+      - Branch
+  /v1/branch/updatebranch:
+    put:
+      consumes:
+      - application/json
+      description: This API updates a Branch
+      parameters:
+      - description: Branch object to update
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.UpdateBranchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Update a Branch
+      tags:
+      - Branch
+  /v1/customer/create:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a customer and returns its id
+      parameters:
+      - description: customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CreateCustomer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Creates a customer
+      tags:
+      - Customer
+  /v1/customer/delete:
+    delete:
+      description: This api delete a customer
+      parameters:
+      - description: customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CustomerPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: delete a customer
+      tags:
+      - Customer
+  /v1/customer/getbyid:
+    post:
+      description: This api get by id a customer
+      parameters:
+      - description: customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CustomerPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get by id a customer
+      tags:
+      - Customer
+  /v1/customer/getlist:
+    post:
+      description: This api get list a customer
+      parameters:
+      - description: customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.GetListCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get list a customer
+      tags:
+      - Customer
+  /v1/customer/update:
+    put:
+      consumes:
+      - application/json
+      description: This API updates a customer
+      parameters:
+      - description: Customer object to update
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.UpdateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Update a customer
+      tags:
+      - Customer
+  /v1/seller/create:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a seller and returns its id
+      parameters:
+      - description: seller
+        in: body
+        name: seller
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CreateSeller'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Creates a seller
+      tags:
+      - Seller
+  /v1/seller/delete:
+    delete:
+      description: This api delete a seller
+      parameters:
+      - description: seller
+        in: body
+        name: seller
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.SellerPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: delete a seller
+      tags:
+      - Seller
+  /v1/seller/getbyid:
+    post:
+      description: This api get by id a seller
+      parameters:
+      - description: seller
+        in: body
+        name: seller
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.SellerPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get by id a seller
+      tags:
+      - Seller
+  /v1/seller/getlist:
+    post:
+      description: This api get list a seller
+      parameters:
+      - description: seller
+        in: body
+        name: seller
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.GetListSellerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get list a seller
+      tags:
+      - Seller
+  /v1/seller/update:
+    put:
+      consumes:
+      - application/json
+      description: This API updates a seller
+      parameters:
+      - description: Seller object to update
+        in: body
+        name: seller
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.UpdateSellerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Update a seller
+      tags:
+      - Seller
+  /v1/shop/create:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a shop and returns its id
+      parameters:
+      - description: shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CreateShop'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Creates a shop
+      tags:
+      - Shop
+  /v1/shop/delete:
+    delete:
+      description: This api delete a shop
+      parameters:
+      - description: shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.ShopPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: delete a shop
+      tags:
+      - Shop
+  /v1/shop/getbyid:
+    post:
+      description: This api get by id a shop
+      parameters:
+      - description: shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.ShopPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get by id a shop
+      tags:
+      - Shop
+  /v1/shop/getlist:
+    post:
+      description: This api get list a shop
+      parameters:
+      - description: shop
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.GetListShopRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get list a shop
+      tags:
+      - Shop
+  /v1/shop/update:
+    put:
+      consumes:
+      - application/json
+      description: This API updates a shop
+      parameters:
+      - description: Shop object to update
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.UpdateShopRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Update a shop
+      tags:
+      - Shop
+  /v1/system-user/create:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a system-user and returns its id
+      parameters:
+      - description: system-user
+        in: body
+        name: system-user
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.CreateSystemUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Creates a system-user
+      tags:
+      - SystemUser
+  /v1/system-user/delete:
+    delete:
+      description: This api delete a system-user
+      parameters:
+      - description: system-user
+        in: body
+        name: system-user
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.SystemUserPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: delete a system-user
+      tags:
+      - SystemUser
+  /v1/system-user/getbyid:
+    post:
+      description: This api get by id a system-user
+      parameters:
+      - description: system-user
+        in: body
+        name: system-user
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.SystemUserPrimaryKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get by id a system-user
+      tags:
+      - SystemUser
+  /v1/system-user/getlist:
+    post:
+      description: This api get list a system-user
+      parameters:
+      - description: system-user
+        in: body
+        name: system-user
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.GetListSystemUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Get list a system-user
+      tags:
+      - SystemUser
+  /v1/system-user/update:
+    put:
+      consumes:
+      - application/json
+      description: This API updates a system-user
+      parameters:
+      - description: SystemUser object to update
+        in: body
+        name: system-user
+        required: true
+        schema:
+          $ref: '#/definitions/user_service.UpdateSystemUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      summary: Update a system-user
+      tags:
+      - SystemUser
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
