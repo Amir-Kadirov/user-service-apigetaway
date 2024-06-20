@@ -116,8 +116,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/branch/getbyid": {
-            "post": {
+        "/v1/branch/getbyid/{id}": {
+            "get": {
                 "description": "This api get by id a Branch",
                 "produces": [
                     "application/json"
@@ -128,13 +128,11 @@ const docTemplate = `{
                 "summary": "Get by id a Branch",
                 "parameters": [
                     {
-                        "description": "Branch",
-                        "name": "Branch",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.BranchPrimaryKey"
-                        }
+                        "type": "string",
+                        "description": "Branch id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -166,24 +164,33 @@ const docTemplate = `{
             }
         },
         "/v1/branch/getlist": {
-            "post": {
-                "description": "This api get list a Branch",
+            "get": {
+                "description": "This api get list a branch",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Branch"
                 ],
-                "summary": "Get list a Branch",
+                "summary": "Get list a branch",
                 "parameters": [
                     {
-                        "description": "Branch",
-                        "name": "Branch",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.GetListBranchRequest"
-                        }
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search gender",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -367,8 +374,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/customer/getbyid": {
-            "post": {
+        "/v1/customer/getbyid/{id}": {
+            "get": {
                 "description": "This api get by id a customer",
                 "produces": [
                     "application/json"
@@ -379,13 +386,11 @@ const docTemplate = `{
                 "summary": "Get by id a customer",
                 "parameters": [
                     {
-                        "description": "customer",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.CustomerPrimaryKey"
-                        }
+                        "type": "string",
+                        "description": "Customer Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -417,7 +422,7 @@ const docTemplate = `{
             }
         },
         "/v1/customer/getlist": {
-            "post": {
+            "get": {
                 "description": "This api get list a customer",
                 "produces": [
                     "application/json"
@@ -428,13 +433,22 @@ const docTemplate = `{
                 "summary": "Get list a customer",
                 "parameters": [
                     {
-                        "description": "customer",
-                        "name": "customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.GetListCustomerRequest"
-                        }
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search gender",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -618,8 +632,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/seller/getbyid": {
-            "post": {
+        "/v1/seller/getbyid/{id}": {
+            "get": {
                 "description": "This api get by id a seller",
                 "produces": [
                     "application/json"
@@ -630,13 +644,11 @@ const docTemplate = `{
                 "summary": "Get by id a seller",
                 "parameters": [
                     {
-                        "description": "seller",
-                        "name": "seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.SellerPrimaryKey"
-                        }
+                        "type": "string",
+                        "description": "Seller id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -668,7 +680,7 @@ const docTemplate = `{
             }
         },
         "/v1/seller/getlist": {
-            "post": {
+            "get": {
                 "description": "This api get list a seller",
                 "produces": [
                     "application/json"
@@ -679,13 +691,22 @@ const docTemplate = `{
                 "summary": "Get list a seller",
                 "parameters": [
                     {
-                        "description": "seller",
-                        "name": "seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.GetListSellerRequest"
-                        }
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search gender",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -869,8 +890,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/shop/getbyid": {
-            "post": {
+        "/v1/shop/getbyid/{id}": {
+            "get": {
                 "description": "This api get by id a shop",
                 "produces": [
                     "application/json"
@@ -881,13 +902,11 @@ const docTemplate = `{
                 "summary": "Get by id a shop",
                 "parameters": [
                     {
-                        "description": "shop",
-                        "name": "shop",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.ShopPrimaryKey"
-                        }
+                        "type": "string",
+                        "description": "Shop id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -919,7 +938,7 @@ const docTemplate = `{
             }
         },
         "/v1/shop/getlist": {
-            "post": {
+            "get": {
                 "description": "This api get list a shop",
                 "produces": [
                     "application/json"
@@ -930,13 +949,22 @@ const docTemplate = `{
                 "summary": "Get list a shop",
                 "parameters": [
                     {
-                        "description": "shop",
-                        "name": "shop",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.GetListShopRequest"
-                        }
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search gender",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1120,8 +1148,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/system-user/getbyid": {
-            "post": {
+        "/v1/system-user/getbyid/{id}": {
+            "get": {
                 "description": "This api get by id a system-user",
                 "produces": [
                     "application/json"
@@ -1132,13 +1160,11 @@ const docTemplate = `{
                 "summary": "Get by id a system-user",
                 "parameters": [
                     {
-                        "description": "system-user",
-                        "name": "system-user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.SystemUserPrimaryKey"
-                        }
+                        "type": "string",
+                        "description": "System User id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1170,7 +1196,7 @@ const docTemplate = `{
             }
         },
         "/v1/system-user/getlist": {
-            "post": {
+            "get": {
                 "description": "This api get list a system-user",
                 "produces": [
                     "application/json"
@@ -1181,13 +1207,22 @@ const docTemplate = `{
                 "summary": "Get list a system-user",
                 "parameters": [
                     {
-                        "description": "system-user",
-                        "name": "system-user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_service.GetListSystemUserRequest"
-                        }
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search gender",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1424,76 +1459,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_service.GetListBranchRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "search": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_service.GetListCustomerRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "search": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_service.GetListSellerRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "search": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_service.GetListShopRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "search": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_service.GetListSystemUserRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "search": {
                     "type": "string"
                 }
             }

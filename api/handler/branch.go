@@ -4,8 +4,10 @@ import (
 	us "backend_course/branch_api_gateway/genproto/user_service"
 	"backend_course/branch_api_gateway/pkg/validator"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,7 +31,7 @@ func (h *handler) CreateBranch(c *gin.Context) {
 		return
 	}
 
-	if !validator.ValidatePhone(req.Phone){
+	if !validator.ValidatePhone(req.Phone) {
 		handleGrpcErrWithDescription(c, h.log, errors.New("error while validating phone"), "error while validating phone body")
 		return
 	}
@@ -43,26 +45,20 @@ func (h *handler) CreateBranch(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Router		/v1/branch/getbyid [post]
+// @Router		/v1/branch/getbyid/{id} [get]	
 // @Summary		Get by id a Branch
 // @Description	This api get by id a Branch
 // @Tags		Branch
-// Accept		json
 // @Produce		json
-// @Param		Branch body user_service.BranchPrimaryKey true "Branch"
+// @Param		id path string true "Branch id"
 // @Success		200  {object}  models.ResponseSuccess
 // @Failure		400  {object}  models.ResponseError
 // @Failure		404  {object}  models.ResponseError
 // @Failure		500  {object}  models.ResponseError
 func (h *handler) GetByID(c *gin.Context) {
-	id := &us.BranchPrimaryKey{}
+	id := c.Param("id")
 
-	if err := c.ShouldBindJSON(&id); err != nil {
-		handleGrpcErrWithDescription(c, h.log, err, "error while binding body")
-		return
-	}
-
-	resp, err := h.grpcClient.BranchBranch().GetByID(c.Request.Context(), id)
+	resp, err := h.grpcClient.BranchBranch().GetByID(c.Request.Context(), &us.BranchPrimaryKey{Id: id})
 	if err != nil {
 		log.Fatal("error while get by id", err)
 		handleGrpcErrWithDescription(c, h.log, err, "error while get by id branch")
@@ -72,29 +68,53 @@ func (h *handler) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Router		/v1/branch/getlist [post]
-// @Summary		Get list a Branch
-// @Description	This api get list a Branch
+// @Router		/v1/branch/getlist [get]
+// @Summary		Get list a branch
+// @Description	This api get list a branch
 // @Tags		Branch
-// Accept		json
 // @Produce		json
-// @Param		Branch body user_service.GetListBranchRequest true "Branch"
+// @Param       limit   query int64  false "Limit"
+// @Param       offset  query int64  false "Offset"
+// @Param       search  query string false "Search gender"
 // @Success		200  {object}  models.ResponseSuccess
 // @Failure		400  {object}  models.ResponseError
 // @Failure		404  {object}  models.ResponseError
 // @Failure		500  {object}  models.ResponseError
-func (h *handler) GetList(c *gin.Context) {
+func (h *handler) GetListBranch(c *gin.Context) {
 	req := &us.GetListBranchRequest{}
 
-	if err := c.ShouldBindJSON(&req); err != nil {
-		handleGrpcErrWithDescription(c, h.log, err, "error while binding body")
-		return
+	limitStr := c.Query("limit")
+	offsetStr := c.Query("offset")
+	search := c.Query("search")
+
+	if limitStr != "" {
+		limit, err := strconv.ParseInt(limitStr, 10, 64)
+		if err != nil {
+			fmt.Errorf("error while parse limit", err)
+			handleGrpcErrWithDescription(c, h.log, err, "error while parse limit")
+			return
+		}
+		req.Limit = limit
+	}
+
+	if offsetStr != "" {
+		offset, err := strconv.ParseInt(offsetStr, 10, 64)
+		if err != nil {
+			fmt.Errorf("error while parse offset", err)
+			handleGrpcErrWithDescription(c, h.log, err, "error while parse offset")
+			return
+		}
+		req.Offset = offset
+	}
+
+	if search != "" {
+		req.Search = search
 	}
 
 	resp, err := h.grpcClient.BranchBranch().GetList(c.Request.Context(), req)
 	if err != nil {
-		log.Fatal("error while get list ", err)
-		handleGrpcErrWithDescription(c, h.log, err, "error while get list branch")
+		fmt.Errorf("error while get list", err)
+		handleGrpcErrWithDescription(c, h.log, err, "error while getting list branch")
 		return
 	}
 

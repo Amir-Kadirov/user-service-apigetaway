@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,18 +29,18 @@ func (h *handler) CreateCustomer(c *gin.Context) {
 		handleGrpcErrWithDescription(c, h.log, errors.New("error while validating gender"), "wrong gender,gender should be (male,female,other)")
 		return
 	}
-	
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while binding body")
 		return
 	}
 
-	if !validator.ValidatePhone(req.Phone){
+	if !validator.ValidatePhone(req.Phone) {
 		handleGrpcErrWithDescription(c, h.log, errors.New("error while validating phone"), "wrong phone")
 		return
 	}
 
-	if !validator.ValidateGmail(req.Gmail){
+	if !validator.ValidateGmail(req.Gmail) {
 		handleGrpcErrWithDescription(c, h.log, errors.New("error while validating gmail"), "wrong gmail")
 		return
 	}
@@ -54,42 +55,43 @@ func (h *handler) CreateCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Router		/v1/customer/getbyid [post]
-// @Summary		Get by id a customer
-// @Description	This api get by id a customer
-// @Tags		Customer
-// Accept		json
-// @Produce		json
-// @Param		customer body user_service.CustomerPrimaryKey true "customer"
-// @Success		200  {object}  models.ResponseSuccess
-// @Failure		400  {object}  models.ResponseError
-// @Failure		404  {object}  models.ResponseError
-// @Failure		500  {object}  models.ResponseError
+// @Router      /v1/customer/getbyid/{id} [get]
+// @Summary     Get by id a customer
+// @Description This api get by id a customer
+// @Tags        Customer
+// @Produce     json
+// @Param       id path string true "Customer Id"
+// @Success     200  {object}  models.ResponseSuccess
+// @Failure     400  {object}  models.ResponseError
+// @Failure     404  {object}  models.ResponseError
+// @Failure     500  {object}  models.ResponseError
 func (h *handler) GetByIdCustomer(c *gin.Context) {
-	id := &us.CustomerPrimaryKey{}
+	id := c.Param("id")
 
-	if err := c.ShouldBindJSON(&id); err != nil {
-		handleGrpcErrWithDescription(c, h.log, err, "error while binding body")
+	if id == "" {
+		h.log.Error("Customer ID is empty")
+		handleGrpcErrWithDescription(c, h.log, errors.New("empty id"), "Error while getting customer by id")
 		return
 	}
 
-	resp, err := h.grpcClient.CustomerService().GetByID(c.Request.Context(), id)
+	resp, err := h.grpcClient.CustomerService().GetByID(c.Request.Context(), &us.CustomerPrimaryKey{Id: id})
 	if err != nil {
-		fmt.Errorf("error while get delete", err)
-		handleGrpcErrWithDescription(c, h.log, err, "error while getting by id customer")
+		fmt.Errorf("Error while getting customer by id: %v", err)
+		handleGrpcErrWithDescription(c, h.log, err, "Error while getting customer by id")
 		return
 	}
 
 	c.JSON(http.StatusOK, resp)
 }
 
-// @Router		/v1/customer/getlist [post]
+// @Router		/v1/customer/getlist [get]
 // @Summary		Get list a customer
 // @Description	This api get list a customer
 // @Tags		Customer
-// Accept		json
 // @Produce		json
-// @Param		customer body user_service.GetListCustomerRequest true "customer"
+// @Param       limit   query int64  false "Limit"
+// @Param       offset  query int64  false "Offset"
+// @Param       search  query string false "Search gender"
 // @Success		200  {object}  models.ResponseSuccess
 // @Failure		400  {object}  models.ResponseError
 // @Failure		404  {object}  models.ResponseError
@@ -97,9 +99,32 @@ func (h *handler) GetByIdCustomer(c *gin.Context) {
 func (h *handler) GetListCustomer(c *gin.Context) {
 	req := &us.GetListCustomerRequest{}
 
-	if err := c.ShouldBindJSON(&req); err != nil {
-		handleGrpcErrWithDescription(c, h.log, err, "error while binding body")
-		return
+	limitStr := c.Query("limit")
+	offsetStr := c.Query("offset")
+	search := c.Query("search")
+
+	if limitStr != "" {
+		limit, err := strconv.ParseInt(limitStr, 10, 64)
+		if err != nil {
+			fmt.Errorf("error while parse limit", err)
+			handleGrpcErrWithDescription(c, h.log, err, "error while parse limit")
+			return
+		}
+		req.Limit = limit
+	}
+
+	if offsetStr != "" {
+		offset, err := strconv.ParseInt(offsetStr, 10, 64)
+		if err != nil {
+			fmt.Errorf("error while parse offset", err)
+			handleGrpcErrWithDescription(c, h.log, err, "error while parse offset")
+			return
+		}
+		req.Offset = offset
+	}
+
+	if search != "" {
+		req.Search = search
 	}
 
 	resp, err := h.grpcClient.CustomerService().GetList(c.Request.Context(), req)

@@ -38,13 +38,13 @@ type SystemUserAuthClient interface {
 	SystemUserLoginByPassword(ctx context.Context, in *SystemUserLoginRequest, opts ...grpc.CallOption) (*SystemUserLoginResponse, error)
 	SystemUserGmailCheck(ctx context.Context, in *SystemUserGmailCheckRequest, opts ...grpc.CallOption) (*SystemUserGmailCheckResponse, error)
 	SystemUserRegisterByMail(ctx context.Context, in *SystemUserGmailCheckRequest, opts ...grpc.CallOption) (*SystemUserEmpty, error)
-	SystemUserRegisterByMailConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error)
+	SystemUserRegisterByMailConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*RespRegSeller, error)
 	SystemUserCreate(ctx context.Context, in *SystemUserCreateRequest, opts ...grpc.CallOption) (*SystemUserEmpty, error)
 	SystemUserLoginByGmail(ctx context.Context, in *SystemUserGmailCheckRequest, opts ...grpc.CallOption) (*SystemUserEmpty, error)
 	SystemUserLoginByGmailComfirm(ctx context.Context, in *SystemUserLoginByGmailRequest, opts ...grpc.CallOption) (*SystemUserLoginResponse, error)
 	SystemUserUpdatePassword(ctx context.Context, in *SystemUserCreateRequest, opts ...grpc.CallOption) (*SystemUserEmpty, error)
 	SystemUserResetPassword(ctx context.Context, in *SystemUserGmailCheckRequest, opts ...grpc.CallOption) (*SystemUserEmpty, error)
-	SystemUserResetPasswordConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error)
+	SystemUserResetPasswordConfirm(ctx context.Context, in *SystemUserPasswordConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error)
 }
 
 type systemUserAuthClient struct {
@@ -82,8 +82,8 @@ func (c *systemUserAuthClient) SystemUserRegisterByMail(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *systemUserAuthClient) SystemUserRegisterByMailConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error) {
-	out := new(SystemUserEmpty)
+func (c *systemUserAuthClient) SystemUserRegisterByMailConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*RespRegSeller, error) {
+	out := new(RespRegSeller)
 	err := c.cc.Invoke(ctx, SystemUserAuth_SystemUserRegisterByMailConfirm_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -136,7 +136,7 @@ func (c *systemUserAuthClient) SystemUserResetPassword(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *systemUserAuthClient) SystemUserResetPasswordConfirm(ctx context.Context, in *SystemUserRConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error) {
+func (c *systemUserAuthClient) SystemUserResetPasswordConfirm(ctx context.Context, in *SystemUserPasswordConfirm, opts ...grpc.CallOption) (*SystemUserEmpty, error) {
 	out := new(SystemUserEmpty)
 	err := c.cc.Invoke(ctx, SystemUserAuth_SystemUserResetPasswordConfirm_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -152,13 +152,13 @@ type SystemUserAuthServer interface {
 	SystemUserLoginByPassword(context.Context, *SystemUserLoginRequest) (*SystemUserLoginResponse, error)
 	SystemUserGmailCheck(context.Context, *SystemUserGmailCheckRequest) (*SystemUserGmailCheckResponse, error)
 	SystemUserRegisterByMail(context.Context, *SystemUserGmailCheckRequest) (*SystemUserEmpty, error)
-	SystemUserRegisterByMailConfirm(context.Context, *SystemUserRConfirm) (*SystemUserEmpty, error)
+	SystemUserRegisterByMailConfirm(context.Context, *SystemUserRConfirm) (*RespRegSeller, error)
 	SystemUserCreate(context.Context, *SystemUserCreateRequest) (*SystemUserEmpty, error)
 	SystemUserLoginByGmail(context.Context, *SystemUserGmailCheckRequest) (*SystemUserEmpty, error)
 	SystemUserLoginByGmailComfirm(context.Context, *SystemUserLoginByGmailRequest) (*SystemUserLoginResponse, error)
 	SystemUserUpdatePassword(context.Context, *SystemUserCreateRequest) (*SystemUserEmpty, error)
 	SystemUserResetPassword(context.Context, *SystemUserGmailCheckRequest) (*SystemUserEmpty, error)
-	SystemUserResetPasswordConfirm(context.Context, *SystemUserRConfirm) (*SystemUserEmpty, error)
+	SystemUserResetPasswordConfirm(context.Context, *SystemUserPasswordConfirm) (*SystemUserEmpty, error)
 	mustEmbedUnimplementedSystemUserAuthServer()
 }
 
@@ -175,7 +175,7 @@ func (UnimplementedSystemUserAuthServer) SystemUserGmailCheck(context.Context, *
 func (UnimplementedSystemUserAuthServer) SystemUserRegisterByMail(context.Context, *SystemUserGmailCheckRequest) (*SystemUserEmpty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SystemUserRegisterByMail not implemented")
 }
-func (UnimplementedSystemUserAuthServer) SystemUserRegisterByMailConfirm(context.Context, *SystemUserRConfirm) (*SystemUserEmpty, error) {
+func (UnimplementedSystemUserAuthServer) SystemUserRegisterByMailConfirm(context.Context, *SystemUserRConfirm) (*RespRegSeller, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SystemUserRegisterByMailConfirm not implemented")
 }
 func (UnimplementedSystemUserAuthServer) SystemUserCreate(context.Context, *SystemUserCreateRequest) (*SystemUserEmpty, error) {
@@ -193,7 +193,7 @@ func (UnimplementedSystemUserAuthServer) SystemUserUpdatePassword(context.Contex
 func (UnimplementedSystemUserAuthServer) SystemUserResetPassword(context.Context, *SystemUserGmailCheckRequest) (*SystemUserEmpty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SystemUserResetPassword not implemented")
 }
-func (UnimplementedSystemUserAuthServer) SystemUserResetPasswordConfirm(context.Context, *SystemUserRConfirm) (*SystemUserEmpty, error) {
+func (UnimplementedSystemUserAuthServer) SystemUserResetPasswordConfirm(context.Context, *SystemUserPasswordConfirm) (*SystemUserEmpty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SystemUserResetPasswordConfirm not implemented")
 }
 func (UnimplementedSystemUserAuthServer) mustEmbedUnimplementedSystemUserAuthServer() {}
@@ -372,7 +372,7 @@ func _SystemUserAuth_SystemUserResetPassword_Handler(srv interface{}, ctx contex
 }
 
 func _SystemUserAuth_SystemUserResetPasswordConfirm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SystemUserRConfirm)
+	in := new(SystemUserPasswordConfirm)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -384,7 +384,7 @@ func _SystemUserAuth_SystemUserResetPasswordConfirm_Handler(srv interface{}, ctx
 		FullMethod: SystemUserAuth_SystemUserResetPasswordConfirm_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SystemUserAuthServer).SystemUserResetPasswordConfirm(ctx, req.(*SystemUserRConfirm))
+		return srv.(SystemUserAuthServer).SystemUserResetPasswordConfirm(ctx, req.(*SystemUserPasswordConfirm))
 	}
 	return interceptor(ctx, in, info, handler)
 }

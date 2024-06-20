@@ -100,51 +100,6 @@ definitions:
       id:
         type: string
     type: object
-  user_service.GetListBranchRequest:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      search:
-        type: string
-    type: object
-  user_service.GetListCustomerRequest:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      search:
-        type: string
-    type: object
-  user_service.GetListSellerRequest:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      search:
-        type: string
-    type: object
-  user_service.GetListShopRequest:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      search:
-        type: string
-    type: object
-  user_service.GetListSystemUserRequest:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      search:
-        type: string
-    type: object
   user_service.Location:
     properties:
       latitude:
@@ -335,16 +290,15 @@ paths:
       summary: delete a Branch
       tags:
       - Branch
-  /v1/branch/getbyid:
-    post:
+  /v1/branch/getbyid/{id}:
+    get:
       description: This api get by id a Branch
       parameters:
-      - description: Branch
-        in: body
-        name: Branch
+      - description: Branch id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/user_service.BranchPrimaryKey'
+        type: string
       produces:
       - application/json
       responses:
@@ -368,15 +322,21 @@ paths:
       tags:
       - Branch
   /v1/branch/getlist:
-    post:
-      description: This api get list a Branch
+    get:
+      description: This api get list a branch
       parameters:
-      - description: Branch
-        in: body
-        name: Branch
-        required: true
-        schema:
-          $ref: '#/definitions/user_service.GetListBranchRequest'
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Search gender
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
@@ -396,7 +356,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ResponseError'
-      summary: Get list a Branch
+      summary: Get list a branch
       tags:
       - Branch
   /v1/branch/updatebranch:
@@ -499,16 +459,15 @@ paths:
       summary: delete a customer
       tags:
       - Customer
-  /v1/customer/getbyid:
-    post:
+  /v1/customer/getbyid/{id}:
+    get:
       description: This api get by id a customer
       parameters:
-      - description: customer
-        in: body
-        name: customer
+      - description: Customer Id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/user_service.CustomerPrimaryKey'
+        type: string
       produces:
       - application/json
       responses:
@@ -532,15 +491,21 @@ paths:
       tags:
       - Customer
   /v1/customer/getlist:
-    post:
+    get:
       description: This api get list a customer
       parameters:
-      - description: customer
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/user_service.GetListCustomerRequest'
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Search gender
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
@@ -663,16 +628,15 @@ paths:
       summary: delete a seller
       tags:
       - Seller
-  /v1/seller/getbyid:
-    post:
+  /v1/seller/getbyid/{id}:
+    get:
       description: This api get by id a seller
       parameters:
-      - description: seller
-        in: body
-        name: seller
+      - description: Seller id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/user_service.SellerPrimaryKey'
+        type: string
       produces:
       - application/json
       responses:
@@ -696,15 +660,21 @@ paths:
       tags:
       - Seller
   /v1/seller/getlist:
-    post:
+    get:
       description: This api get list a seller
       parameters:
-      - description: seller
-        in: body
-        name: seller
-        required: true
-        schema:
-          $ref: '#/definitions/user_service.GetListSellerRequest'
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Search gender
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
@@ -827,16 +797,15 @@ paths:
       summary: delete a shop
       tags:
       - Shop
-  /v1/shop/getbyid:
-    post:
+  /v1/shop/getbyid/{id}:
+    get:
       description: This api get by id a shop
       parameters:
-      - description: shop
-        in: body
-        name: shop
+      - description: Shop id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/user_service.ShopPrimaryKey'
+        type: string
       produces:
       - application/json
       responses:
@@ -860,15 +829,21 @@ paths:
       tags:
       - Shop
   /v1/shop/getlist:
-    post:
+    get:
       description: This api get list a shop
       parameters:
-      - description: shop
-        in: body
-        name: shop
-        required: true
-        schema:
-          $ref: '#/definitions/user_service.GetListShopRequest'
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Search gender
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
@@ -991,16 +966,15 @@ paths:
       summary: delete a system-user
       tags:
       - SystemUser
-  /v1/system-user/getbyid:
-    post:
+  /v1/system-user/getbyid/{id}:
+    get:
       description: This api get by id a system-user
       parameters:
-      - description: system-user
-        in: body
-        name: system-user
+      - description: System User id
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/user_service.SystemUserPrimaryKey'
+        type: string
       produces:
       - application/json
       responses:
@@ -1024,15 +998,21 @@ paths:
       tags:
       - SystemUser
   /v1/system-user/getlist:
-    post:
+    get:
       description: This api get list a system-user
       parameters:
-      - description: system-user
-        in: body
-        name: system-user
-        required: true
-        schema:
-          $ref: '#/definitions/user_service.GetListSystemUserRequest'
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Search gender
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:

@@ -51,36 +51,36 @@ func New(cnf Config) *gin.Engine {
 	})
 
 	r.POST("/v1/branch/create", handler.CreateBranch)
-	r.POST("/v1/branch/getbyid", handler.GetByID)
-	r.POST("/v1/branch/getlist", handler.GetList)
+	r.GET("/v1/branch/getbyid/:id", handler.GetByID)
+	r.GET("/v1/branch/getlist", handler.GetListBranch)
 	r.PUT("/v1/branch/updatebranch", handler.Update)
 	r.DELETE("/v1/branch/delete", handler.Delete)
 
 	r.POST("/v1/customer/create", handler.CreateCustomer)
-	r.POST("/v1/customer/getbyid", handler.GetByIdCustomer)
-	r.POST("/v1/customer/getlist", handler.GetListCustomer)
+	r.GET("/v1/customer/getbyid/:id", handler.GetByIdCustomer)
+	r.GET("/v1/customer/getlist", handler.GetListCustomer)
 	r.PUT("/v1/customer/update", handler.UpdateCustomer)
 	r.DELETE("/v1/customer/delete", handler.DeleteCustomer)
 
 	r.POST("/v1/shop/create", handler.CreateShop)
-	r.POST("/v1/shop/getbyid", handler.GetByIdShop)
-	r.POST("/v1/shop/getlist", handler.GetListShop)
+	r.GET("/v1/shop/getbyid/:id", handler.GetByIdShop)
+	r.GET("/v1/shop/getlist", handler.GetListShop)
 	r.PUT("/v1/shop/update", handler.UpdateShop)
 	r.DELETE("/v1/shop/delete", handler.DeleteShop)
 
 	r.POST("/v1/seller/create", handler.CreateSeller)
-	r.POST("/v1/seller/getbyid", handler.GetByIdSeller)
-	r.POST("/v1/seller/getlist", handler.GetListSeller)
+	r.GET("/v1/seller/getbyid/:id", handler.GetByIdSeller)
+	r.GET("/v1/seller/getlist", handler.GetListSeller)
 	r.PUT("/v1/seller/update", handler.UpdateSeller)
 	r.DELETE("/v1/seller/delete", handler.DeleteSeller)
 
 	r.POST("/v1/system-user/create", handler.CreateSystemUser)
-	r.POST("/v1/system-user/getbyid", handler.GetByIdSystemUser)
-	r.POST("/v1/system-user/getlist", handler.GetListSystemUser)
-	r.PUT("/v1/system-user/update", handler.UpdateSystemUser)	
+	r.GET("/v1/system-user/getbyid/:id", handler.GetByIdSystemUser)
+	r.GET("/v1/system-user/getlist", handler.GetListSystemUser)
+	r.PUT("/v1/system-user/update", handler.UpdateSystemUser)
 	r.DELETE("/v1/system-user/delete", handler.DeleteSystemUser)
 
-	// Shipper endpoints	
+	// Shipper endpoints
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

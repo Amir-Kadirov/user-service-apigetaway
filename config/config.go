@@ -41,7 +41,7 @@ func Load() Config {
 	c.RedisPassword = cast.ToString(getOrReturnDefault("REDIS_PASSWORD", "3EEdwhDOfx"))
 
 	c.UserBranchHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
-	c.UserBranchPort = cast.ToString(getOrReturnDefault("USER_GRPC_PORT", "8082"))
+	c.UserBranchPort = cast.ToString(getOrReturnDefault("USER_GRPC_PORT", "8081"))
 
 	return c
 }

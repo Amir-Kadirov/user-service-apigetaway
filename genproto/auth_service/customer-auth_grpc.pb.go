@@ -38,13 +38,13 @@ type CustomerAuthClient interface {
 	LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	GmailCheck(ctx context.Context, in *GmailCheckRequest, opts ...grpc.CallOption) (*GmailCheckResponse, error)
 	RegisterByMail(ctx context.Context, in *GmailCheckRequest, opts ...grpc.CallOption) (*Empty, error)
-	RegisterByMailConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*Empty, error)
+	RegisterByMailConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*RegGmailResp, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*Empty, error)
 	LoginByGmail(ctx context.Context, in *GmailCheckRequest, opts ...grpc.CallOption) (*Empty, error)
 	LoginByGmailComfirm(ctx context.Context, in *LoginByGmailRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	UpdatePassword(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*Empty, error)
 	ResetPassword(ctx context.Context, in *GmailCheckRequest, opts ...grpc.CallOption) (*Empty, error)
-	ResetPasswordConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*Empty, error)
+	ResetPasswordConfirm(ctx context.Context, in *CustomerPasswordConfirm, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type customerAuthClient struct {
@@ -82,8 +82,8 @@ func (c *customerAuthClient) RegisterByMail(ctx context.Context, in *GmailCheckR
 	return out, nil
 }
 
-func (c *customerAuthClient) RegisterByMailConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *customerAuthClient) RegisterByMailConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*RegGmailResp, error) {
+	out := new(RegGmailResp)
 	err := c.cc.Invoke(ctx, CustomerAuth_RegisterByMailConfirm_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -136,7 +136,7 @@ func (c *customerAuthClient) ResetPassword(ctx context.Context, in *GmailCheckRe
 	return out, nil
 }
 
-func (c *customerAuthClient) ResetPasswordConfirm(ctx context.Context, in *RConfirm, opts ...grpc.CallOption) (*Empty, error) {
+func (c *customerAuthClient) ResetPasswordConfirm(ctx context.Context, in *CustomerPasswordConfirm, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, CustomerAuth_ResetPasswordConfirm_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -152,13 +152,13 @@ type CustomerAuthServer interface {
 	LoginByPassword(context.Context, *LoginRequest) (*LoginResponse, error)
 	GmailCheck(context.Context, *GmailCheckRequest) (*GmailCheckResponse, error)
 	RegisterByMail(context.Context, *GmailCheckRequest) (*Empty, error)
-	RegisterByMailConfirm(context.Context, *RConfirm) (*Empty, error)
+	RegisterByMailConfirm(context.Context, *RConfirm) (*RegGmailResp, error)
 	Create(context.Context, *CreateRequest) (*Empty, error)
 	LoginByGmail(context.Context, *GmailCheckRequest) (*Empty, error)
 	LoginByGmailComfirm(context.Context, *LoginByGmailRequest) (*LoginResponse, error)
 	UpdatePassword(context.Context, *CreateRequest) (*Empty, error)
 	ResetPassword(context.Context, *GmailCheckRequest) (*Empty, error)
-	ResetPasswordConfirm(context.Context, *RConfirm) (*Empty, error)
+	ResetPasswordConfirm(context.Context, *CustomerPasswordConfirm) (*Empty, error)
 	mustEmbedUnimplementedCustomerAuthServer()
 }
 
@@ -175,7 +175,7 @@ func (UnimplementedCustomerAuthServer) GmailCheck(context.Context, *GmailCheckRe
 func (UnimplementedCustomerAuthServer) RegisterByMail(context.Context, *GmailCheckRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterByMail not implemented")
 }
-func (UnimplementedCustomerAuthServer) RegisterByMailConfirm(context.Context, *RConfirm) (*Empty, error) {
+func (UnimplementedCustomerAuthServer) RegisterByMailConfirm(context.Context, *RConfirm) (*RegGmailResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterByMailConfirm not implemented")
 }
 func (UnimplementedCustomerAuthServer) Create(context.Context, *CreateRequest) (*Empty, error) {
@@ -193,7 +193,7 @@ func (UnimplementedCustomerAuthServer) UpdatePassword(context.Context, *CreateRe
 func (UnimplementedCustomerAuthServer) ResetPassword(context.Context, *GmailCheckRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
-func (UnimplementedCustomerAuthServer) ResetPasswordConfirm(context.Context, *RConfirm) (*Empty, error) {
+func (UnimplementedCustomerAuthServer) ResetPasswordConfirm(context.Context, *CustomerPasswordConfirm) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPasswordConfirm not implemented")
 }
 func (UnimplementedCustomerAuthServer) mustEmbedUnimplementedCustomerAuthServer() {}
@@ -372,7 +372,7 @@ func _CustomerAuth_ResetPassword_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _CustomerAuth_ResetPasswordConfirm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RConfirm)
+	in := new(CustomerPasswordConfirm)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -384,7 +384,7 @@ func _CustomerAuth_ResetPasswordConfirm_Handler(srv interface{}, ctx context.Con
 		FullMethod: CustomerAuth_ResetPasswordConfirm_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CustomerAuthServer).ResetPasswordConfirm(ctx, req.(*RConfirm))
+		return srv.(CustomerAuthServer).ResetPasswordConfirm(ctx, req.(*CustomerPasswordConfirm))
 	}
 	return interceptor(ctx, in, info, handler)
 }
